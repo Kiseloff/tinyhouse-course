@@ -12,12 +12,25 @@ export const typeDefs = gql`
     numOfBaths: Int!
     rating: Int!
   }
-  
-  type Query {
-      listings: [Listing!]!
+
+  input ListingInput {
+    title: String!
+    image: String!
+    address: String!
+    price: Int!
+    numOfGuests: Int!
+    numOfBeds: Int!
+    numOfBaths: Int!
+    rating: Int!
   }
   
-  type Mutations {
-      deleteListing(id: ID!): Listing!
+  type Query {
+    listings: [Listing!]!
+    listing(id: ID!): Listing!
+  }
+  
+  type Mutation {
+    deleteListing(id: ID!): Listing!
+    addListing(newListing: ListingInput!): Listing
   }
 `;
