@@ -1,11 +1,18 @@
-import {IResolvers} from "apollo-server-express";
-import {listings} from "../listings";
+import { IResolvers } from "apollo-server-express";
+import { listings } from "../listings";
+import { ObjectId } from "mongodb";
+import { Database, Listing } from "../lib/types";
 import crypto from "crypto";
+
 
 export const resolvers: IResolvers = {
   Query: {
-    listings: () => {
-      return listings
+    listings: async (
+      _root: undefined,
+      _args: {},
+      { db }: { db: Database}
+      ): Promise<Listing[]> => {
+      return await db.listings.find({}).toArray();
     },
     listing: (_root, { id }) => {
       const result = listings.filter(listing => listing.id === id)[0];
@@ -17,14 +24,21 @@ export const resolvers: IResolvers = {
     }
   },
   Mutation: {
-    deleteListing: (_root, { id }) => {
-      for (let i = 0; i < listings.length; i++){
-        if (listings[i].id === id) {
-          return listings.splice(i,1)[0];
-        }
+    deleteListing: async (
+      _root,
+      { id }: { id: string },
+      { db }: { db: Database}
+    ): Promise<Listing> => {
+
+      const deleteRes = await db.listings.findOneAndDelete({
+        _id: new ObjectId(id)
+      });
+
+      if (!deleteRes.value) {
+        throw new Error("failed to delete listing")
       }
 
-      throw new Error("failed to delete listing")
+      return deleteRes.value
     },
     addListing: (_root, { newListing }) => {
       newListing.id = crypto.randomBytes(16).toString("hex");
@@ -33,5 +47,9 @@ export const resolvers: IResolvers = {
 
       return newListing
     }
+  },
+  Listing: {
+    id:
+      (listing: Listing): string => listing._id.toString()
   }
 };

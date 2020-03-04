@@ -9,7 +9,8 @@
     "dev": "nodemon",
     "build": "tsc -p ./",
     "start": "node build/index.js",
-    "dbtest": "nodemon src/database/index.ts"
+    "dbtest": "nodemon src/database/index.ts",
+    "seed": "ts-node temp/seed.ts"
   },
   "author": "Kiseloff",
   "license": "ISC",

@@ -22,8 +22,8 @@ const mount = async (app: Application) => {
     console.log(`App listening on port ${port}!`);
   });
 
-  const listings = await db.listings.find({}).toArray();
-  console.log({listings});
+  // const listings = await db.listings.find({}).toArray();
+  // console.log({listings});
 };
 
 mount(express());
