@@ -8,7 +8,7 @@ import {
   GraphQLSchema
 } from "graphql";
 
-import {listings} from "./listings";
+import {_listings} from "./listings";
 
 
 const Listing = new GraphQLObjectType({
@@ -31,7 +31,7 @@ const query = new GraphQLObjectType({
   fields: {
     listings: {
       type: GraphQLNonNull(GraphQLList(GraphQLNonNull(Listing))),
-      resolve: () => listings
+      resolve: () => _listings
     }
   }
 });
@@ -45,9 +45,9 @@ const mutation = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLID) }
       },
       resolve: (_root, { id }) => {
-        for (let i = 0; i < listings.length; i++){
-          if (listings[i].id === id) {
-            return listings.splice(i,1)[0];
+        for (let i = 0; i < _listings.length; i++){
+          if (_listings[i].id === id) {
+            return _listings.splice(i,1)[0];
           }
         }
 

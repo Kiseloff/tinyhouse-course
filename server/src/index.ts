@@ -26,4 +26,5 @@ const mount = async (app: Application) => {
   // console.log({listings});
 };
 
-mount(express());
+mount(express())
+    .catch(err => console.log(`-- Can't connect to Mongo DB: ${err}`));

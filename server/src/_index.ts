@@ -2,7 +2,7 @@ import express from 'express';
 import {ApolloServer} from "apollo-server-express";
 
 // import bodyParser from "body-parser";
-import { listings } from "./listings";
+import { _listings } from "./listings";
 
 const app = express();
 const port = 9000;
@@ -18,13 +18,13 @@ app.get('/', (_req, res) => res.send('Hello world!'));
 app.get('/listings', (_req, res) => {
   // return res.send(listings)
   res.status(200)
-    .send({listings})
+    .send({listings: _listings})
 });
 
 app.get('/listing', (req, res) => {
   const id = req.body.id;
 
-  const result = listings.filter(listing => listing.id === id)[0];
+  const result = _listings.filter(listing => listing.id === id)[0];
 
   if (result)
     res.status(200)
@@ -37,10 +37,10 @@ app.get('/listing', (req, res) => {
 app.delete('/listing', (req, res) => {
   const id: string = req.body.id;
 
-  for (let i = 0; i < listings.length; i++){
-    if (listings[i].id === id) {
+  for (let i = 0; i < _listings.length; i++){
+    if (_listings[i].id === id) {
       return res.status(200)
-        .send(listings.splice(i,1)[0])
+        .send(_listings.splice(i,1)[0])
     }
   }
 
@@ -51,9 +51,9 @@ app.delete('/listing', (req, res) => {
 app.post('/delete-listing', (req, res) => {
   const id: string = req.body.id;
 
-  for (let i = 0; i < listings.length; i++){
-    if (listings[i].id === id) {
-      return res.send(listings.splice(i,1)[0])
+  for (let i = 0; i < _listings.length; i++){
+    if (_listings[i].id === id) {
+      return res.send(_listings.splice(i,1)[0])
     }
   }
 

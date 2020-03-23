@@ -1,11 +1,11 @@
 import { IResolvers } from "apollo-server-express";
-import { listings } from "../listings";
+import { _listings } from "../listings";
 import { ObjectId } from "mongodb";
 import { Database, Listing } from "../lib/types";
 import crypto from "crypto";
 
 
-export const resolvers: IResolvers = {
+export const _resolvers: IResolvers = {
   Query: {
     listings: async (
       _root: undefined,
@@ -15,7 +15,7 @@ export const resolvers: IResolvers = {
       return await db.listings.find({}).toArray();
     },
     listing: (_root, { id }) => {
-      const result = listings.filter(listing => listing.id === id)[0];
+      const result = _listings.filter(listing => listing.id === id)[0];
 
       if (result)
         return result;
@@ -43,7 +43,7 @@ export const resolvers: IResolvers = {
     addListing: (_root, { newListing }) => {
       newListing.id = crypto.randomBytes(16).toString("hex");
 
-      listings.push(newListing);
+      _listings.push(newListing);
 
       return newListing
     }
